@@ -42,7 +42,9 @@ class MyOFLTextField extends TextField
 			case FlxKey.LEFT:
 				var pos = (caretIndex-1) >= 0 ? caretIndex - 1 : 0;
 				setSelection(pos, pos);
+				#if debug
 				trace(caretIndex);
+				#end
 			case FlxKey.RIGHT:
 				var pos = (caretIndex + 1) < text.length ? caretIndex + 1 : text.length;
 				setSelection(pos, pos);
@@ -177,10 +179,12 @@ class PlayState extends FlxState
 
 	function handleButtonClick()
 	{
+		#if debug
 		trace('[DEBUG] shader source:');
 		trace(Bytes.ofString(shadersrc_textarea.text));
 		trace('[DEBUG] script:');
 		trace(Bytes.ofString(script_textarea.text));
+		#end
 
 		// save the text u wrote so far in case the program crashes on execution
 		FlxG.save.data.shadersrc = shadersrc_textarea.text;
@@ -194,7 +198,9 @@ class PlayState extends FlxState
 		var ast = parser.parseString(script_textarea.text);
 		interpreter.variables.set('shader', newshader);
 		var result = interpreter.execute(ast);
+		#if debug
 		trace('[DEBUG] result: $result');
+		#end
 		var execute = interpreter.variables.get('execute');
 		if(execute != null)
 		{
