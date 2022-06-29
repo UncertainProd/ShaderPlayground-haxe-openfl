@@ -194,8 +194,8 @@ class PlayState extends FlxState
 	function put_disclaimer_text()
 	{
 		// var disclaimer = new FlxText(loadcodebtn.x + loadcodebtn.width + 5, loadcodebtn.y, 300, "P.S: If the program crashes, just reload the page.", 10);
-		var disclaimer = new FlxText(0, loadcodebtn.y + loadcodebtn.height, 500, "P.S: If the program crashes, just reload the page.", 10);
-		disclaimer.text += " All your code is saved every time you click the compile button";
+		var what_to_do = #if html5 "reload the page" #else "Press ctrl+R and reload" #end;
+		var disclaimer = new FlxText(0, loadcodebtn.y + loadcodebtn.height, 500, 'P.S: If the program crashes, just $what_to_do. All your code is saved every time you click the compile button', 10);
 		disclaimer.setFormat('Consolas', 15, FlxColor.WHITE);
 		disclaimer.updateHitbox();
 		add(disclaimer);
@@ -365,5 +365,13 @@ class PlayState extends FlxState
 			var onUpdate = interpreter.variables.get('onUpdate');
 			onUpdate(elapsed);
 		}
+		#if sys
+		if(FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.R)
+		{
+			FlxG.removeChild(shadersrc_textarea);
+			FlxG.removeChild(script_textarea);
+			FlxG.resetGame();
+		}
+		#end
 	}
 }
